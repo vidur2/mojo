@@ -21,7 +21,7 @@ from memory import memcpy, LegacyPointer
 
 from collections import Optional
 
-from utils import StaticTuple, Variant
+from utils import InlineArray, Variant
 from utils._format import ToFormatter
 
 
@@ -467,7 +467,7 @@ struct _ArrayMem[ElementType: AnyRegType, SIZE: Int](Sized):
         SIZE: The fixed number of elements stored in the array.
     """
 
-    var storage: StaticTuple[ElementType, SIZE]
+    var storage: InlineArray[ElementType, SIZE]
     """The underlying storage for this array value."""
 
     # ===------------------------------------------------------------------===#
@@ -478,7 +478,7 @@ struct _ArrayMem[ElementType: AnyRegType, SIZE: Int](Sized):
     fn __init__(inout self):
         """Constructs an empty (undefined) array."""
 
-        self.storage = StaticTuple[ElementType, SIZE]()
+        self.storage = InlineArray[ElementType, SIZE]()
 
     # ===------------------------------------------------------------------=== #
     # Trait Interfaces

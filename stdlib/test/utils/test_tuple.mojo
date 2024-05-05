@@ -14,20 +14,20 @@
 
 from testing import assert_equal, assert_false, assert_true
 
-from utils import StaticTuple, StaticIntTuple
+from utils import InlineArray, StaticIntTuple
 
 
 def test_static_tuple():
     print("== test_static_tuple")
 
-    var tup1 = StaticTuple[Int, 1](1)
+    var tup1 = InlineArray[Int, 1](1)
     assert_equal(tup1[0], 1)
 
-    var tup2 = StaticTuple[Int, 2](1)
+    var tup2 = InlineArray[Int, 2](1)
     assert_equal(tup2[0], 1)
     assert_equal(tup2[1], 1)
 
-    var tup3 = StaticTuple[Int, 3](1, 2, 3)
+    var tup3 = InlineArray[Int, 3](1, 2, 3)
     assert_equal(tup3[0], 1)
     assert_equal(tup3[1], 2)
     assert_equal(tup3[2], 3)

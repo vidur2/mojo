@@ -24,7 +24,7 @@ from builtin.io import _get_dtype_printf_format, _snprintf
 from builtin.string import _calc_initial_buffer_size
 
 from . import unroll
-from .static_tuple import StaticTuple
+from .static_tuple import InlineArray
 
 # ===----------------------------------------------------------------------===#
 # Utilities
@@ -58,15 +58,15 @@ fn _reduce_and_fn(a: Bool, b: Bool) -> Bool:
 fn _int_tuple_binary_apply[
     size: Int,
     binary_fn: fn (Int, Int) -> Int,
-](a: StaticTuple[Int, size], b: StaticTuple[Int, size]) -> StaticTuple[
+](a: InlineArray[Int, size], b: InlineArray[Int, size]) -> InlineArray[
     Int, size
 ]:
     """Applies a given element binary function to each pair of corresponding
     elements in two tuples.
 
     Example Usage:
-        var a: StaticTuple[Int, size]
-        var b: StaticTuple[Int, size]
+        var a: InlineArray[Int, size]
+        var b: InlineArray[Int, size]
         var c = _int_tuple_binary_apply[size, Int.add](a, b)
 
     Parameters:
@@ -81,7 +81,7 @@ fn _int_tuple_binary_apply[
         Tuple containing the result.
     """
 
-    var c = StaticTuple[Int, size]()
+    var c = InlineArray[Int, size]()
 
     @always_inline
     @parameter
@@ -99,7 +99,7 @@ fn _int_tuple_binary_apply[
 fn _int_tuple_compare[
     size: Int,
     comp_fn: fn (Int, Int) -> Bool,
-](a: StaticTuple[Int, size], b: StaticTuple[Int, size]) -> StaticTuple[
+](a: InlineArray[Int, size], b: InlineArray[Int, size]) -> InlineArray[
     mlir_bool,
     size,
 ]:
@@ -107,8 +107,8 @@ fn _int_tuple_compare[
     elements in two tuples and produces a tuple of Bools containing result.
 
     Example Usage:
-        var a: StaticTuple[Int, size]
-        var b: StaticTuple[Int, size]
+        var a: InlineArray[Int, size]
+        var b: InlineArray[Int, size]
         var c = _int_tuple_compare[size, Int.less_than](a, b)
 
     Parameters:
@@ -123,7 +123,7 @@ fn _int_tuple_compare[
         Tuple containing the result.
     """
 
-    var c = StaticTuple[mlir_bool, size]()
+    var c = InlineArray[mlir_bool, size]()
 
     @always_inline
     @parameter
@@ -141,12 +141,12 @@ fn _int_tuple_compare[
 fn _bool_tuple_reduce[
     size: Int,
     reduce_fn: fn (Bool, Bool) -> Bool,
-](a: StaticTuple[mlir_bool, size], init: Bool) -> Bool:
+](a: InlineArray[mlir_bool, size], init: Bool) -> Bool:
     """Reduces the tuple argument with the given reduce function and initial
     value.
 
     Example Usage:
-        var a: StaticTuple[mlir_bool, size]
+        var a: InlineArray[mlir_bool, size]
         var c = _bool_tuple_reduce[size, _reduce_and_fn](a, True)
 
     Parameters:
@@ -187,7 +187,7 @@ struct StaticIntTuple[size: Int](Sized, Stringable, EqualityComparable):
         size: The size of the tuple.
     """
 
-    var data: StaticTuple[Int, size]
+    var data: InlineArray[Int, size]
     """The underlying storage of the tuple value."""
 
     @always_inline
@@ -375,11 +375,11 @@ struct StaticIntTuple[size: Int](Sized, Stringable, EqualityComparable):
         self.data[index] = val
 
     @always_inline("nodebug")
-    fn as_tuple(self) -> StaticTuple[Int, size]:
-        """Converts this StaticIntTuple to StaticTuple.
+    fn as_tuple(self) -> InlineArray[Int, size]:
+        """Converts this StaticIntTuple to InlineArray.
 
         Returns:
-            The corresponding StaticTuple object.
+            The corresponding InlineArray object.
         """
         return self.data
 

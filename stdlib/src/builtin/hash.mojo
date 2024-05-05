@@ -289,7 +289,7 @@ fn hash(bytes: DTypePointer[DType.int8], n: Int) -> Int:
     # 3. Copy the tail data (smaller than the SIMD register) into
     #    a final hash state update vector that's stack-allocated.
     if r != 0:
-        var remaining = StaticTuple[Int8, stride]()
+        var remaining = InlineArray[Int8, stride]()
         var ptr = DTypePointer[DType.int8](
             Pointer.address_of(remaining).bitcast[Int8]()
         )

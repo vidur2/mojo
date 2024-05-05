@@ -21,7 +21,7 @@ from collections.vector import InlinedFixedVector
 
 from memory import Pointer, Reference
 
-from utils import StaticTuple
+from utils import InlineArray
 
 # ===----------------------------------------------------------------------===#
 # _VecIter
@@ -97,7 +97,7 @@ struct InlinedFixedVector[
     """
 
     alias static_size: Int = size
-    alias static_data_type = StaticTuple[type, size]
+    alias static_data_type = InlineArray[type, size]
     var static_data: Self.static_data_type
     """The underlying static storage, used for small vectors."""
     var dynamic_data: Pointer[type]
