@@ -10,12 +10,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ===----------------------------------------------------------------------=== #
-"""Implements InlineArray, a statically-sized uniform container.
+"""Implements StaticTuple, a statically-sized uniform container.
 
 You can import these APIs from the `utils` package. For example:
 
 ```mojo
-from utils import InlineArray
+from utils import StaticTuple
 ```
 """
 
@@ -98,24 +98,24 @@ fn _create_array[
 
 
 # ===----------------------------------------------------------------------===#
-# InlineArray
+# StaticTuple
 # ===----------------------------------------------------------------------===#
 
 
 fn _static_tuple_construction_checks[size: Int]():
-    """Checks if the properties in `InlineArray` are valid.
+    """Checks if the properties in `StaticTuple` are valid.
 
     Validity right now is just ensuring the number of elements is > 0.
 
     Parameters:
       size: The number of elements.
     """
-    constrained[size > 0, "number of elements in `InlineArray` must be > 0"]()
+    constrained[size > 0, "number of elements in `StaticTuple` must be > 0"]()
 
 
 @value
 @register_passable("trivial")
-struct InlineArray[element_type: AnyRegType, size: Int](Sized):
+struct StaticTuple[element_type: AnyRegType, size: Int](Sized):
     """A statically sized tuple type which contains elements of homogeneous types.
 
     Parameters:
